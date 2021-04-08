@@ -1,16 +1,75 @@
-# This is a sample Python script.
-import pandas
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Importing the libraries
+import numpy as np
+import pandas as pd
+import tensorflow as tf
 
+tf.__version__
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Data Preprocessing
 
+# Importing the dataset
+dataset = pd.read_csv('Churn_Modelling.csv')
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Features
+X = dataset.iloc[:, 3:-1].values
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Exited values 0 or 1
+y = dataset.iloc[:, -1].values
+print("---X---")
+print(X)
+print("---Y---")
+print(y)
+
+# Encoding categorical data
+# Label Encoding the "Gender" column -> 0 or 1, randomly chosen by the machine
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+X[:, 2] = le.fit_transform(X[:, 2])
+print(X)
+
+# One Hot Encoding the "Geography" column
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+X = np.array(ct.fit_transform(X))
+print(X)
+
+# Splitting the dataset into the Training set and Test set
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# Feature Scaling
+from sklearn.preprocessing import StandardScaler
+
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Building the ANN
+
+# Initializing the ANN
+ann = tf.keras.models.Sequential()
+
+# Dense layer
+# The dense layer is a neural network layer that is connected deeply,
+# which means each neuron in the dense layer receives input from all neurons of its previous layer.
+# The dense layer is found to be the most commonly used layer in the models.
+
+# Adding the input layer and the first hidden layer
+ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
+
+# Adding the second hidden layer
+ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
+
+# Adding the output layer
+ann.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+
+# Training the ANN
+
+# Compiling the ANN
+ann.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Training the ANN on the Training set
+ann.fit(X_train, y_train, batch_size=32, epochs=20)
