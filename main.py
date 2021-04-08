@@ -8,12 +8,15 @@ tf.__version__
 # Data Preprocessing
 
 # Importing the dataset
-dataset = pd.read_csv('Churn_Modelling.csv')
-
+dataset = pd.read_csv('deliveries-2.csv')
+print(dataset.columns)
+dataset.drop(labels=['delivery_date', 'slot_start_time', 'slot_end_time'], axis=1)
+print(dataset.columns)
 # Features
-X = dataset.iloc[:, 3:-1].values
+X = dataset.iloc[:, 1:-1].values
 
-# Exited values 0 or 1
+
+# Service time
 y = dataset.iloc[:, -1].values
 print("---X---")
 print(X)
@@ -21,16 +24,27 @@ print("---Y---")
 print(y)
 
 # Encoding categorical data
-# Label Encoding the "Gender" column -> 0 or 1, randomly chosen by the machine
+# Label Encoding the binary columns -> 0 or 1, randomly chosen by the machine
 from sklearn.preprocessing import LabelEncoder
-
 le = LabelEncoder()
+X[:, 0] = le.fit_transform(X[:, 0])
 X[:, 2] = le.fit_transform(X[:, 2])
-print(X)
+X[:, 3] = le.fit_transform(X[:, 3])
+X[:, 4] = le.fit_transform(X[:, 4])
 
-# One Hot Encoding the "Geography" column
+
+# One Hot Encoding the "non-binary" columns
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+X = np.array(ct.fit_transform(X))
+
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+X = np.array(ct.fit_transform(X))
+
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+X = np.array(ct.fit_transform(X))
+
 ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
 X = np.array(ct.fit_transform(X))
 print(X)
