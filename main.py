@@ -72,9 +72,6 @@ X_test = sc.transform(X_test)
 ann = tf.keras.models.Sequential()
 
 # Dense layer
-# The dense layer is a neural network layer that is connected deeply,
-# which means each neuron in the dense layer receives input from all neurons of its previous layer.
-# The dense layer is found to be the most commonly used layer in the models.
 
 # Adding the input layer and the first hidden layer
 ann.add(tf.keras.layers.Dense(units=64, activation='relu'))
