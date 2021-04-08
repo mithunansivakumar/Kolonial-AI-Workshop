@@ -10,10 +10,12 @@ tf.__version__
 # Importing the dataset
 dataset = pd.read_csv('deliveries-2.csv')
 print(dataset.columns)
-dataset.drop(labels=['delivery_date', 'slot_start_time', 'slot_end_time'], axis=1)
-print(dataset.columns)
+dataset.drop(labels=['delivery_date', 'slot_start_time', 'slot_end_time'], axis=1, inplace=True)
+print(dataset.columns) # can_select_unattend
+
 # Features
 X = dataset.iloc[:, 1:-1].values
+
 
 
 # Service time
@@ -36,16 +38,16 @@ X[:, 4] = le.fit_transform(X[:, 4])
 # One Hot Encoding the "non-binary" columns
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
-ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [10])], remainder='passthrough')
 X = np.array(ct.fit_transform(X))
 
-ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [12])], remainder='passthrough')
 X = np.array(ct.fit_transform(X))
 
-ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [13])], remainder='passthrough')
 X = np.array(ct.fit_transform(X))
 
-ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [14])], remainder='passthrough')
 X = np.array(ct.fit_transform(X))
 print(X)
 
