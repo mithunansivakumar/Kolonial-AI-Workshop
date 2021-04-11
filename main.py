@@ -43,7 +43,7 @@ print("-------------")
 print(X[0])
 
 
-# One Hot Encoding the "non-binary" columns
+# One Hot Encoding
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 """
