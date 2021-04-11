@@ -30,7 +30,7 @@ print("---Y---")
 print(y)
 
 # Encoding categorical data
-# Label Encoding the binary columns -> 0 or 1, randomly chosen by the machine
+# Label Encoding 
 from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 X[:, 0] = le.fit_transform(X[:, 0])
